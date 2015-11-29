@@ -1,7 +1,5 @@
 package org.santa.step4;
 
-import org.santa.step4.Elf.ElfState;
-
 public class Santa implements Runnable {
 	
 	enum SantaState {
@@ -46,8 +44,8 @@ public class Santa implements Runnable {
 					// FIXME: help the elves who are at the door and go back to
 					// Help all evles at the door
 					for (Elf elf : scenario.getElves()) {
-						if ( elf.getState() == ElfState.AT_SANTAS_DOOR )
-							elf.setState(ElfState.WORKING);
+						if ( elf.needHelp() )
+							elf.helped();
 					}
 					// sleep
 					state = SantaState.SLEEPING;

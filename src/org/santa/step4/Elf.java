@@ -83,6 +83,14 @@ public class Elf implements Runnable {
 	public Thread getThread() {
 		return myThread;
 	}
+	
+	public void helped() {
+		state = ElfState.WORKING;
+	}
+	
+	public Boolean needHelp() {
+		return (state == ElfState.AT_SANTAS_DOOR);
+	}
 
 	/**
 	 * Santa might call this function to fix the trouble
