@@ -14,11 +14,9 @@ public class Elf implements Runnable {
 	 */
 	private int identifier;
 	private Random rand = new Random();
-	private Scenario scenario;
 
 	public Elf(int identifier, Scenario scenario) {
 		this.identifier = identifier;
-		this.scenario = scenario;
 		this.state = ElfState.WORKING;
 	}
 
