@@ -1,3 +1,5 @@
+package org.santa.step0;
+
 import java.util.Random;
 
 public class Elf implements Runnable {

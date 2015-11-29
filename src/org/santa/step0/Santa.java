@@ -1,3 +1,5 @@
+package org.santa.step0;
+
 public class Santa implements Runnable {
 
 	enum SantaState {

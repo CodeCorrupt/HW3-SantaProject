@@ -40,3 +40,7 @@ local.properties
 
 # STS (Spring Tool Suite)
 .springBeans
+
+# Open work doc
+~*.doc
+~*.docx
