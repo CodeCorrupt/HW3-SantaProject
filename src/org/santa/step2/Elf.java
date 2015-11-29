@@ -5,6 +5,7 @@ import java.util.Random;
 public class Elf implements Runnable {
 	
 	final int ELVES_TO_WAKE = 1;
+	final int ELVES_FOR_DOOR = 3;
 	final double ELF_ERROR = 0.01;
 
 	enum ElfState {
@@ -62,17 +63,18 @@ public class Elf implements Runnable {
 			}
 			case TROUBLE:
 				// FIXME: if possible, move to Santa's door
-				this.state = ElfState.AT_SANTAS_DOOR;
+				if ( (elvesInTrouble() >= ELVES_FOR_DOOR) && (elvesAtDoor() == 0)) {
+					//Send those elves to the door
+					for (Elf elf : scenario.getElves()) {
+						if ( elf.getState() == ElfState.TROUBLE )
+							elf.setState(ElfState.AT_SANTAS_DOOR);
+					}
+				}
 				break;
 			case AT_SANTAS_DOOR:
 				// FIXME: if feasible, wake up Santa
 				//Check for elves at door
-				int elvesAtDoor = 0;
-				for (Elf elf : scenario.getElves()) {
-					if ( elf.getState() == ElfState.AT_SANTAS_DOOR )
-						elvesAtDoor++;
-				}
-				if ( elvesAtDoor >= ELVES_TO_WAKE ) {
+				if ( elvesAtDoor() >= ELVES_TO_WAKE ) {
 					scenario.getSanta().wakeUpByElves();
 				}
 				break;
@@ -82,6 +84,24 @@ public class Elf implements Runnable {
 	
 	public Thread getThread() {
 		return myThread;
+	}
+	
+	public int elvesInTrouble() {
+		int inTrouble = 0;
+		for (Elf elf : scenario.getElves()) {
+			if ( elf.getState() == ElfState.TROUBLE )
+				inTrouble++;
+		}
+		return inTrouble;
+	}
+	
+	public  int elvesAtDoor() {
+		int atDoor = 0;
+		for (Elf elf : scenario.getElves()) {
+			if ( elf.getState() == ElfState.AT_SANTAS_DOOR )
+				atDoor++;
+		}
+		return atDoor;
 	}
 
 	/**
