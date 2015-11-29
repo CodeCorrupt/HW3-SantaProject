@@ -7,6 +7,8 @@ public class Elf implements Runnable {
 	enum ElfState {
 		WORKING, TROUBLE, AT_SANTAS_DOOR
 	};
+	
+	Thread myThread = null;
 
 	private ElfState state;
 	/**
@@ -14,11 +16,9 @@ public class Elf implements Runnable {
 	 */
 	private int identifier;
 	private Random rand = new Random();
-	private Scenario scenario;
 
 	public Elf(int identifier, Scenario scenario) {
 		this.identifier = identifier;
-		this.scenario = scenario;
 		this.state = ElfState.WORKING;
 	}
 
@@ -35,13 +35,16 @@ public class Elf implements Runnable {
 
 	@Override
 	public void run() {
+		System.out.println("Elf " + this.identifier + " running with thread ID: " + Thread.currentThread().getId());
+		myThread = Thread.currentThread();
 		while (true) {
 			// wait a day
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ID:" + getThread().getId() + " has been inturrupted -- ELF");
+				return;
 			}
 			switch (state) {
 			case WORKING: {
@@ -60,6 +63,10 @@ public class Elf implements Runnable {
 				break;
 			}
 		}
+	}
+	
+	public Thread getThread() {
+		return myThread;
 	}
 
 	/**

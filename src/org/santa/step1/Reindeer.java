@@ -7,6 +7,8 @@ public class Reindeer implements Runnable {
 	public enum ReindeerState {
 		AT_BEACH, AT_WARMING_SHED, AT_THE_SLEIGH
 	};
+	
+	Thread myThread = null;
 
 	private ReindeerState state;
 	private Scenario scenario;
@@ -32,13 +34,16 @@ public class Reindeer implements Runnable {
 
 	@Override
 	public void run() {
+		System.out.println("Reindeer " + this.identifier + " running with thread ID: " + Thread.currentThread().getId());
+		myThread = Thread.currentThread();
 		while (true) {
 			// wait a day
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ID:" + getThread().getId() + " has been inturrupted -- Reindeer");
+				return;
 			}
 			// see what we need to do:
 			switch (state) {
@@ -59,6 +64,10 @@ public class Reindeer implements Runnable {
 				break;
 			}
 		}
+	}
+	
+	public Thread getThread() {
+		return myThread;
 	}
 
 }
