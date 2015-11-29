@@ -3,12 +3,16 @@ package org.santa.step2;
 import java.util.Random;
 
 public class Elf implements Runnable {
+	
+	final int ELVES_TO_WAKE = 1;
+	final double ELF_ERROR = 0.01;
 
 	enum ElfState {
 		WORKING, TROUBLE, AT_SANTAS_DOOR
 	};
 	
 	Thread myThread = null;
+	Scenario scenario = null;
 
 	private ElfState state;
 	/**
@@ -19,6 +23,7 @@ public class Elf implements Runnable {
 
 	public Elf(int identifier, Scenario scenario) {
 		this.identifier = identifier;
+		this.scenario = scenario;
 		this.state = ElfState.WORKING;
 	}
 
@@ -40,7 +45,7 @@ public class Elf implements Runnable {
 		while (true) {
 			// wait a day
 			try {
-				Thread.sleep(100);
+				Thread.sleep(Main.DAY_LENGTH);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ID:" + getThread().getId() + " has been inturrupted -- ELF");
@@ -50,16 +55,26 @@ public class Elf implements Runnable {
 			case WORKING: {
 				// at each day, there is a 1% chance that an elf runs into
 				// trouble.
-				if (rand.nextDouble() < 0.01) {
+				if (rand.nextDouble() < ELF_ERROR) {
 					state = ElfState.TROUBLE;
 				}
 				break;
 			}
 			case TROUBLE:
 				// FIXME: if possible, move to Santa's door
+				this.state = ElfState.AT_SANTAS_DOOR;
 				break;
 			case AT_SANTAS_DOOR:
 				// FIXME: if feasible, wake up Santa
+				//Check for elves at door
+				int elvesAtDoor = 0;
+				for (Elf elf : scenario.getElves()) {
+					if ( elf.getState() == ElfState.AT_SANTAS_DOOR )
+						elvesAtDoor++;
+				}
+				if ( elvesAtDoor >= ELVES_TO_WAKE ) {
+					scenario.getSanta().wakeUpByElves();
+				}
 				break;
 			}
 		}

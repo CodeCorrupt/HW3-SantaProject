@@ -39,7 +39,7 @@ public class Reindeer implements Runnable {
 		while (true) {
 			// wait a day
 			try {
-				Thread.sleep(100);
+				Thread.sleep(Main.DAY_LENGTH);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ID:" + getThread().getId() + " has been inturrupted -- Reindeer");

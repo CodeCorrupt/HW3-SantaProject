@@ -3,13 +3,15 @@ package org.santa.step2;
 
 public class Main {
 
+	public static final int DAY_LENGTH = 100; //in milliseconds
+	
 	public static void main(String args[]) {
 		
 		//Final variables
 		final int TOTAL_DAYS = 500;
 		final int KILL_DAY = 370;
 		final int NUM_ELVES = 10;
-		final int NUM_REINDEER = 0;
+		final int NUM_REINDEER = 0;//9;
 		
 		Scenario scenario = new Scenario();
 		// create the participants
@@ -34,6 +36,15 @@ public class Main {
 		}
 		// now, start the passing of time
 		for (int day = 0; day < TOTAL_DAYS; day++) {
+			// wait a day
+			try {
+				Thread.sleep(DAY_LENGTH);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				System.out.println("********** Main thread Interrupted **********");
+				return;
+				//e.printStackTrace();
+			}
 			System.out.println("***********  Day " + (day+1) + " *************************");
 			//Kill all if kill day
 			if ( day+1 == KILL_DAY ) {
@@ -48,14 +59,6 @@ public class Main {
 				for (Reindeer reindeer : scenario.getReindeers()) {
 					reindeer.getThread().interrupt();
 				}
-			}
-			// wait a day
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				System.out.println("********** Main thread Interrupted **********");
-				//e.printStackTrace();
 			}
 			// turn on December
 			if (day > (365 - 31)) {

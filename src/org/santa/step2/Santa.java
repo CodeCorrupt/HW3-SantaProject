@@ -1,10 +1,14 @@
 package org.santa.step2;
 
-public class Santa implements Runnable {
+import org.santa.step2.Elf.ElfState;
 
+public class Santa implements Runnable {
+	
 	enum SantaState {
 		SLEEPING, READY_FOR_CHRISTMAS, WOKEN_UP_BY_ELVES, WOKEN_UP_BY_REINDEER
 	};
+	
+	Scenario scenario = null;
 	
 	Thread myThread = null;
 	
@@ -12,6 +16,7 @@ public class Santa implements Runnable {
 
 	public Santa(Scenario scenario) {
 		this.state = SantaState.SLEEPING;
+		this.scenario = scenario;
 	}
 
 	/**
@@ -28,7 +33,7 @@ public class Santa implements Runnable {
 		while (!getThread().isInterrupted()) {
 			// wait a day...
 			try {
-				Thread.sleep(100);
+				Thread.sleep(Main.DAY_LENGTH);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ID:" + getThread().getId() + " has been inturrupted -- Santa");
@@ -39,7 +44,13 @@ public class Santa implements Runnable {
 					break;
 				case WOKEN_UP_BY_ELVES:
 					// FIXME: help the elves who are at the door and go back to
+					// Help all evles at the door
+					for (Elf elf : scenario.getElves()) {
+						if ( elf.getState() == ElfState.AT_SANTAS_DOOR )
+							elf.setState(ElfState.WORKING);
+					}
 					// sleep
+					state = SantaState.SLEEPING;
 					break;
 				case WOKEN_UP_BY_REINDEER:
 					// FIXME: assemble the reindeer to the sleigh then change state
@@ -49,6 +60,11 @@ public class Santa implements Runnable {
 					break;
 			}
 		}
+	}
+	
+	public void wakeUpByElves() {
+		state = SantaState.WOKEN_UP_BY_ELVES;
+		return;
 	}
 	
 	public Thread getThread() {
