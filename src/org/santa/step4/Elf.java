@@ -10,17 +10,14 @@ public class Elf implements Runnable {
 	enum ElfState {
 		WORKING, TROUBLE, AT_SANTAS_DOOR
 	};
-	
-	Thread myThread = null;
-	Scenario scenario = null;
-
-	private ElfState state;
-	/**
-	 * The number associated with the Elf
-	 */
+	//The number associated with the Elf
 	private int identifier;
+	private ElfState state;
+	private Thread myThread = null;
+	private Scenario scenario = null;
 	private Random rand = new Random();
 
+	// Constructor
 	public Elf(int identifier, Scenario scenario) {
 		this.identifier = identifier;
 		this.scenario = scenario;
@@ -31,9 +28,7 @@ public class Elf implements Runnable {
 		return state;
 	}
 
-	/**
-	 * Report about my state
-	 */
+	// Report about my state
 	public void report() {
 		System.out.println("Elf " + identifier + " : " + state);
 	}
@@ -53,8 +48,7 @@ public class Elf implements Runnable {
 			}
 			switch (state) {
 			case WORKING: {
-				// at each day, there is a 1% chance that an elf runs into
-				// trouble.
+				// at each day, there is a 1% chance that an elf runs into trouble.
 				if (rand.nextDouble() < ELF_ERROR) {
 					state = ElfState.TROUBLE;
 				}
@@ -62,19 +56,9 @@ public class Elf implements Runnable {
 			}
 			case TROUBLE:
 				// FIXME: if possible, move to Santa's door
-				this.state = ElfState.AT_SANTAS_DOOR;
 				break;
 			case AT_SANTAS_DOOR:
 				// FIXME: if feasible, wake up Santa
-				//Check for elves at door
-				int elvesAtDoor = 0;
-				for (Elf elf : scenario.getElves()) {
-					if ( elf.getState() == ElfState.AT_SANTAS_DOOR )
-						elvesAtDoor++;
-				}
-				if ( elvesAtDoor >= ELVES_TO_WAKE ) {
-					scenario.getSanta().wakeUpByElves();
-				}
 				break;
 			}
 		}
@@ -84,19 +68,8 @@ public class Elf implements Runnable {
 		return myThread;
 	}
 	
-	public void helped() {
-		state = ElfState.WORKING;
-	}
-	
-	public Boolean needHelp() {
-		return (state == ElfState.AT_SANTAS_DOOR);
-	}
 
-	/**
-	 * Santa might call this function to fix the trouble
-	 * 
-	 * @param state
-	 */
+	// Santa might call this function to fix the trouble
 	public void setState(ElfState state) {
 		this.state = state;
 	}

@@ -2,22 +2,24 @@ package org.santa.step4;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 public class Scenario {
-
+	
 	private Santa santa;
 	private List<Elf> elves;
 	private List<Reindeer> reindeers;
 	private boolean isDecember;
+	
 
-	/**
-	 * Initialize the lists etc
-	 */
+	// Initialize the lists etc
 	public Scenario() {
 		isDecember = false;
 		santa = null;
 		elves = new ArrayList<>();
 		reindeers = new ArrayList<>();
+		// Initialize Semaphores
+		
 	}
 
 	public List<Elf> getElves() {

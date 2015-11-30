@@ -4,48 +4,46 @@ package org.santa.step4;
 public class Main {
 
 	public static final int DAY_LENGTH = 100; //in milliseconds
-	
+	//Final variables
+	public static final int TOTAL_DAYS = 500;
+	public static final int KILL_DAY = 370;
+	public static final int NUM_ELVES = 10;
+	public static final int NUM_REINDEER = 0;//9;
+
 	public static void main(String args[]) {
 		
-		//Final variables
-		final int TOTAL_DAYS = 500;
-		final int KILL_DAY = 370;
-		final int NUM_ELVES = 10;
-		final int NUM_REINDEER = 0;//9;
-		
 		Scenario scenario = new Scenario();
-		// create the participants
-		// Santa
+		// Initialize Santa
 		scenario.setSanta( new Santa(scenario) );
 		Thread th = new Thread(scenario.getSanta());
 		th.start();
 		System.out.println(th.getId());
-		// The elves: in this case: 10
+		// Initialize the elves
 		for (int i = 0; i != NUM_ELVES; i++) {
 			Elf elf = new Elf(i + 1, scenario);
 			scenario.getElves().add(elf);
 			th = new Thread(elf);
 			th.start();
 		}
-		// The reindeer: in this case: 9
+		// Initialize the reindeer
 		for (int i = 0; i != NUM_REINDEER; i++) {
 			Reindeer reindeer = new Reindeer(i + 1, scenario);
 			scenario.getReindeers().add(reindeer);
 			th = new Thread(reindeer);
 			th.start();
 		}
+		
 		// now, start the passing of time
 		for (int day = 0; day < TOTAL_DAYS; day++) {
 			// wait a day
 			try {
 				Thread.sleep(DAY_LENGTH);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				System.out.println("********** Main thread Interrupted **********");
 				return;
-				//e.printStackTrace();
 			}
 			System.out.println("***********  Day " + (day+1) + " *************************");
+			
 			//Kill all if kill day
 			if ( day+1 == KILL_DAY ) {
 				System.out.println("It's Kill DAY!!!!");
@@ -60,10 +58,12 @@ public class Main {
 					reindeer.getThread().interrupt();
 				}
 			}
+			
 			// turn on December
 			if (day > (365 - 31)) {
 				scenario.setDecember(true);
 			}
+			
 			// print out the state:
 			scenario.getSanta().report();
 			for (Elf elf : scenario.getElves()) {
