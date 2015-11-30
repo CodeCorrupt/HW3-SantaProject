@@ -3,13 +3,6 @@ package org.santa.step4;
 
 public class Main {
 
-	public static final int DAY_LENGTH = 100; //in milliseconds
-	//Final variables
-	public static final int TOTAL_DAYS = 500;
-	public static final int KILL_DAY = 370;
-	public static final int NUM_ELVES = 10;
-	public static final int NUM_REINDEER = 0;//9;
-
 	public static void main(String args[]) {
 		
 		Scenario scenario = new Scenario();
@@ -19,14 +12,14 @@ public class Main {
 		th.start();
 		System.out.println(th.getId());
 		// Initialize the elves
-		for (int i = 0; i != NUM_ELVES; i++) {
+		for (int i = 0; i != Scenario.NUM_ELVES; i++) {
 			Elf elf = new Elf(i + 1, scenario);
 			scenario.getElves().add(elf);
 			th = new Thread(elf);
 			th.start();
 		}
 		// Initialize the reindeer
-		for (int i = 0; i != NUM_REINDEER; i++) {
+		for (int i = 0; i != Scenario.NUM_REINDEER; i++) {
 			Reindeer reindeer = new Reindeer(i + 1, scenario);
 			scenario.getReindeers().add(reindeer);
 			th = new Thread(reindeer);
@@ -34,10 +27,10 @@ public class Main {
 		}
 		
 		// now, start the passing of time
-		for (int day = 0; day < TOTAL_DAYS; day++) {
+		for (int day = 0; day < Scenario.TOTAL_DAYS; day++) {
 			// wait a day
 			try {
-				Thread.sleep(DAY_LENGTH);
+				Thread.sleep(Scenario.DAY_LENGTH);
 			} catch (InterruptedException e) {
 				System.out.println("********** Main thread Interrupted **********");
 				return;
@@ -45,7 +38,7 @@ public class Main {
 			System.out.println("***********  Day " + (day+1) + " *************************");
 			
 			//Kill all if kill day
-			if ( day+1 == KILL_DAY ) {
+			if ( day+1 == Scenario.KILL_DAY ) {
 				System.out.println("It's Kill DAY!!!!");
 				System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Killing Santa");
 				scenario.getSanta().getThread().interrupt();

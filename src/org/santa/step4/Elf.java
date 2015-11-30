@@ -40,7 +40,7 @@ public class Elf implements Runnable {
 		while (true) {
 			// wait a day
 			try {
-				Thread.sleep(Main.DAY_LENGTH);
+				Thread.sleep(Scenario.DAY_LENGTH);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ID:" + getThread().getId() + " has been inturrupted -- ELF");
