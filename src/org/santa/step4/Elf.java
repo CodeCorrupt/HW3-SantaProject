@@ -27,8 +27,6 @@ public class Elf implements Runnable {
 
 	// Report about my state
 	public void report() {
-		if (state == ElfState.TROUBLE)
-			System.out.println("Elf " + identifier + " : " + state + "************");
 		System.out.println("Elf " + identifier + " : " + state);
 	}
 
@@ -41,7 +39,6 @@ public class Elf implements Runnable {
 			try {
 				Thread.sleep(Scenario.DAY_LENGTH);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ID:" + getThread().getId() + " has been inturrupted -- ELF");
 				return;
 			}
@@ -61,16 +58,14 @@ public class Elf implements Runnable {
 				try {
 					scenario.semElvesInTrouble.acquire();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					return;
 				}
 				
 				// Wait for there to be three
 				try {
 					scenario.semElvesWaiting.acquire();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					return;
 				}
 				
 				// Go to the door
@@ -85,9 +80,13 @@ public class Elf implements Runnable {
 				try {
 					scenario.semElvesGettingHelp.acquire();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					return;
 				}
+				/*
+				 * There are thread timing issues that cauase it to look as though elves are being helped before they go to the door. 
+				 * If you enable the print statement below you can see that elves are always helped in batches of 3. 
+				 */
+				//System.out.println("Got Help");
 				// Go back to work
 				state = ElfState.WORKING;
 				
