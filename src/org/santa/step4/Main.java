@@ -52,6 +52,12 @@ public class Main {
 				}
 			}
 			
+			//Check if there are three elves waiting
+			if ( scenario.semElvesInTrouble.availablePermits() == 0 ) {
+				scenario.semElvesWaiting.release(Scenario.ELVES_TO_WAKE); // Move three to door
+				scenario.semElvesInTrouble.release(Scenario.ELVES_TO_WAKE); // Queue up three more to wait to move to door
+			}
+			
 			// turn on December
 			if (day > (365 - 31)) {
 				scenario.setDecember(true);

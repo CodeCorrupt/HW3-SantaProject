@@ -3,9 +3,6 @@ package org.santa.step4;
 import java.util.Random;
 
 public class Elf implements Runnable {
-	
-	final int ELVES_TO_WAKE = 1;
-	final double ELF_ERROR = 0.01;
 
 	enum ElfState {
 		WORKING, TROUBLE, AT_SANTAS_DOOR
@@ -30,6 +27,8 @@ public class Elf implements Runnable {
 
 	// Report about my state
 	public void report() {
+		if (state == ElfState.TROUBLE)
+			System.out.println("Elf " + identifier + " : " + state + "************");
 		System.out.println("Elf " + identifier + " : " + state);
 	}
 
@@ -49,16 +48,49 @@ public class Elf implements Runnable {
 			switch (state) {
 			case WORKING: {
 				// at each day, there is a 1% chance that an elf runs into trouble.
-				if (rand.nextDouble() < ELF_ERROR) {
+				if (rand.nextDouble() < Scenario.ELF_ERROR) {
 					state = ElfState.TROUBLE;
 				}
 				break;
 			}
 			case TROUBLE:
 				// FIXME: if possible, move to Santa's door
+				
+				// Queue up to visit Santa 
+				// 			** Only three can get past here.
+				try {
+					scenario.semElvesInTrouble.acquire();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				// Wait for there to be three
+				try {
+					scenario.semElvesWaiting.acquire();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				// Go to the door
+				state = ElfState.AT_SANTAS_DOOR;
+				
 				break;
 			case AT_SANTAS_DOOR:
 				// FIXME: if feasible, wake up Santa
+				scenario.getSanta().wakeByElves();
+				
+				// Wait for santa to wake up and help.
+				try {
+					scenario.semElvesGettingHelp.acquire();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				// Go back to work
+				state = ElfState.WORKING;
+				
 				break;
 			}
 		}

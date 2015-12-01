@@ -38,7 +38,13 @@ public class Santa implements Runnable {
 					break;
 				case WOKEN_UP_BY_ELVES:
 					// FIXME: help the elves who are at the door and go back to
+					
+					//Help the elves.
+					scenario.semElvesGettingHelp.release(Scenario.ELVES_TO_WAKE);
+					
 					// sleep
+					state = SantaState.SLEEPING;
+					
 					break;
 				case WOKEN_UP_BY_REINDEER:
 					// FIXME: assemble the reindeer to the sleigh then change state
@@ -52,6 +58,10 @@ public class Santa implements Runnable {
 	
 	public Thread getThread() {
 		return myThread;
+	}
+	
+	public void wakeByElves() {
+		state = SantaState.WOKEN_UP_BY_ELVES;
 	}
 
 }
