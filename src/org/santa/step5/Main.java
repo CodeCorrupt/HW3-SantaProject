@@ -71,14 +71,14 @@ public class Main {
 	}
 	
 	private static void killDay(Scenario scenario) {
-		System.out.println("It's Kill DAY!!!!");
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Killing Santa");
+		//System.out.println("It's Kill DAY!!!!");
+		//System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Killing Santa");
 		scenario.getSanta().getThread().interrupt();
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Killing Elves");
+		//System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Killing Elves");
 		for (Elf elf : scenario.getElves()) {
 			elf.getThread().interrupt();
 		}
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Killing Reindeer");
+		//System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Killing Reindeer");
 		for (Reindeer reindeer : scenario.getReindeers()) {
 			reindeer.getThread().interrupt();
 		}

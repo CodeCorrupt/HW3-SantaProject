@@ -15,7 +15,7 @@ public class Scenario {
 	public static final int ELVES_TO_WAKE = 3;
 	public static final double ELF_ERROR = 0.01;
 	
-	public static final double REINDEER_RETURN_RATE = 1;
+	public static final double REINDEER_RETURN_RATE = .1;
 	
 	private Santa santa;
 	private List<Elf> elves;
@@ -26,6 +26,7 @@ public class Scenario {
 	public Semaphore semElvesInTrouble = new Semaphore(Scenario.ELVES_TO_WAKE, true);
 	public Semaphore semElvesWaiting = new Semaphore(Scenario.ELVES_TO_WAKE, true);
 	public Semaphore semElvesGettingHelp = new Semaphore(Scenario.ELVES_TO_WAKE, true);
+	
 	public Semaphore semReindeerReturned = new Semaphore(Scenario.NUM_REINDEER, true);
 	public Semaphore semReindeerWaiting = new Semaphore(Scenario.NUM_REINDEER, true);
 	public Semaphore semReindeerHitched = new Semaphore(Scenario.NUM_REINDEER, true);
